@@ -5,7 +5,7 @@
 * Flush and close the producer
 
 ## Producer 
-#### Sticky Partitioner
+#### Sticky Partitioner(//NOT RECOMMENDED IN PROD as we can to have it follow stickyPartition - IMPROVES NETWORK EFFICIENCY)
 * Since Kafka 2.4, the Sticky Partitioner became the default for the Java Kafka client.
 
 * When sending msg if multiple msg are send quickly, producer will accumulate msg as much as possible and send in batch when its full and then switch to new batch, leading to sending to all msg to same partition rather than doing ***RoundRobin**(each msg to different partition)*

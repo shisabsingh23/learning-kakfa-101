@@ -25,11 +25,13 @@ public class ProducerDemoStickyPartitioner {
 
         //set batch to low size to have msg go to different partition
         //or else follows stickyPartitioner
+        //NOT RECOMMENDED IN PROD as we can to have it follow stickyPartition 
+        //IMPROVES NETWORK EFFICIENCY
         properties.setProperty("batch.size", "40");
 
         //create Kafka producer
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
-clear
+
         for (int i = 0; i < 30; i++) {
            //create a record/msg
             ProducerRecord<String, String> producerRecord
