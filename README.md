@@ -18,7 +18,7 @@
  ### Setup the $PATH environment variable
 *  In order to easily access the Kafka binaries, you can edit your PATH variable by adding the following line (edit the content to your system) to your system run commands (for example ~/.zshrc if you use zshrc):
 
-```python PATH="$PATH:/Users/stephanemaarek/kafka_2.13-3.0.0/bin" ```
+``` PATH="$PATH:/Users/user-name/2.13-3.9.0/bin" ```
 
 * Start Kafka in docker
 curl -L https://releases.conduktor.io/quick-start -o docker-compose.yml && docker compose up -d --wait && echo "Conduktor started on http://localhost:8080"
@@ -28,6 +28,13 @@ curl -L https://releases.conduktor.io/quick-start -o docker-compose.yml && docke
 ```python
 kafka-topics.sh --bootstrap-server localhost:19092 --topic consumer-grp-topic-23 --create --partitions 3 --replication-factor 1
 ```
+
+
+* Produce msg default mode(sends to same partition from CLI / round robin from Java client)	
+```python
+kafka-console-producer.sh --bootstrap-server localhost:9092 --topic order_events
+```
+
 
 * Produce msg in round robin	
 ```python

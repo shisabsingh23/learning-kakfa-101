@@ -32,11 +32,13 @@ public class ProducerDemoStickyPartitioner {
         //create Kafka producer
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
-        for (int i = 0; i < 30; i++) {
+        for (int i = 1000; i < 2000; i++) {
+            String topic = "sales_events";
+            String value = "new data " + i;
            //create a record/msg
             ProducerRecord<String, String> producerRecord
-                    = new ProducerRecord<>("topic-for-ide", "**Demo for stickPartitioner -> " + i);
-
+                    = new ProducerRecord<>(topic, value);
+        
             //send data
             //use callback
             producer.send(producerRecord, new Callback() {
