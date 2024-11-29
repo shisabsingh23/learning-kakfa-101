@@ -15,11 +15,14 @@
 ## Kafka CLI Cmd
 ### Connects to conduktor.io
 
+ ### Setup the $PATH environment variable
+*  In order to easily access the Kafka binaries, you can edit your PATH variable by adding the following line (edit the content to your system) to your system run commands (for example ~/.zshrc if you use zshrc):
+
+```python PATH="$PATH:/Users/stephanemaarek/kafka_2.13-3.0.0/bin" ```
 
 * Start Kafka in docker
-```python
 curl -L https://releases.conduktor.io/quick-start -o docker-compose.yml && docker compose up -d --wait && echo "Conduktor started on http://localhost:8080"
-```
+
 
 * Create Topic	
 ```python
