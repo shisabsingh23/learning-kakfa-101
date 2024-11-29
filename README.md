@@ -5,7 +5,7 @@
 * Flush and close the producer
 
 ## Producer 
-#### Sticky Partitioner(//NOT RECOMMENDED IN PROD as we can to have it follow stickyPartition - IMPROVES NETWORK EFFICIENCY)
+#### Sticky Partitioner(NOT RECOMMENDED IN PROD as we can to have it follow stickyPartition - IMPROVES NETWORK EFFICIENCY)
 * Since Kafka 2.4, the Sticky Partitioner became the default for the Java Kafka client.
 
 * When sending msg if multiple msg are send quickly, producer will accumulate msg as much as possible and send in batch when its full and then switch to new batch, leading to sending to all msg to same partition rather than doing ***RoundRobin**(each msg to different partition)*
@@ -76,20 +76,20 @@ kafka-consumer-groups.sh --bootstrap-server localhost:19092 --group grp-v3 --res
 
 * The first step is to generate a new ID for your cluster
 ```python
-~/kafka_2.13-3.8.1/bin/kafka-storage.sh random-uuid
+~/kafka_2.13-3.9.0/bin/kafka-storage.sh random-uuid
 ```
 This returns a UUID, for example 76BLQI7sT_ql1mBfKsOk9Q
 
 * Next, format your storage directory (replace <uuid> by your UUID obtained above)
 ```python
-~/kafka_2.13-3.8.1/bin/kafka-storage.sh format -t <UUID> -c ~/kafka_2.13-3.8.1/config/kraft/server.properties
+~/kafka_2.13-3.9.0/bin/kafka-storage.sh format -t <UUID> -c ~/kafka_2.13-3.9.0/config/kraft/server.properties
 ```
 This will format the directory that is in the log.dirs in the config/kraft/server.properties file (by default /tmp/kraft-combined-logs)
 
 
 * Launch the broker itself in daemon mode by running this command
 ```python
-~/kafka_2.13-3.8.1/bin/kafka-server-start.sh ~/kafka_2.13-3.8.1/config/kraft/server.properties
+~/kafka_2.13-3.9.0/bin/kafka-server-start.sh ~/kafka_2.13-3.9.0/config/kraft/server.properties
 ```
 * List all available topics
 ```python
