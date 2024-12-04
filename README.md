@@ -14,8 +14,18 @@
 
 ## Run multiple instance of consumer
  * Edit configuration -> Allows multiple instance
- * This way you can run multiple instance and see load balancer of kafka in action
+ * This way you can run multiple instance and see rebalance of kafka in action
 
+## Rebalance
+* Kafka default rebalance strategy is eager(round robin, stickyPartitioner, )
+* Eager rebalance works like this,
+`  eg: Topic(sales_events) has 3 partition and only 2 consumer ( Cnsmr A: prt 1) and (Cnsmr B: prt 2,0) 
+`  
+    * When **new consumer joins**, for a `very minimal seconds all consumers leave the assigned partition `they were assigned and `rejoins`
+    * **`See, this can cause problem`** if num of consumer are high as `data might be lost` during the process
+      _**all consumer leaving the group ->  rejoining -> new partition getting assigned (assigned randomly)**_
+    * No guarantee, same partition will be assigned when rejoined and assigned during rebalancing
+  
 ## Kafka CLI Cmd
 ### Connects to conduktor.io
 
