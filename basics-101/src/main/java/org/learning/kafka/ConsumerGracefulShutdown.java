@@ -43,7 +43,8 @@ public class ConsumerGracefulShutdown {
 
         /*
         this method analogy-> when ctrl + c is detected or shutdown is detected
-        it gets trigger
+        it gets trigger (right after it detects and just before JVM shutdowns, that is why we are able to rejoin
+        the mainThread in line no: 68)
         new thread is created*/
 
         Runtime.getRuntime().addShutdownHook(new Thread()
