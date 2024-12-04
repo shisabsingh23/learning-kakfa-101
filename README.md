@@ -12,6 +12,10 @@
 
 * Improves network efficiency as less travel is done.
 
+## Run multiple instance of consumer
+ * Edit configuration -> Allows multiple instance
+ * This way you can run multiple instance and see load balancer of kafka in action
+
 ## Kafka CLI Cmd
 ### Connects to conduktor.io
 
