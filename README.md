@@ -117,6 +117,17 @@ This will format the directory that is in the log.dirs in the config/kraft/serve
 kafka-topics.sh --bootstrap-server localhost:9092  --list
 ```
 
+## Wikimedia
+### Real world example
+
+* Wikimedia Data Stream (real time recent changes on Wikimedia) : `https://stream.wikimedia.org/v2/stream/recentchange
+`
+* UI to visualize: `https://esjewett.github.io/wm-eventsource-demo/`
+
+### Dependencies required
+* OkHttp3
+* OkHttp EventSource
+
 ## Questions
 1) Why flush() and close() method are important?
 * without those methods, producer might send not send msg and exit the program.
