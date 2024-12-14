@@ -124,6 +124,20 @@ kafka-topics.sh --bootstrap-server localhost:9092  --list
 `
 * UI to visualize: `https://esjewett.github.io/wm-eventsource-demo/`
 
+### Producer Flow (Receive data from wikimedia and produce to kafka)
+* First code initialize the setup for events
+  * such as source url, where to send data, etc
+* Then, Impl class **onMessage() method keeps listening** for event
+and sends to kafka. Method is async
+* Note
+  * initialization does not happen for every new even in stream, we setup once and listener takes care of the rest.
+  * eg: NOT INITIALIZED FOR EVERY NEW EVENT
+  `EventHandler eventHandler = new WikiMediaEventChangeHandlerImpl(producer, topic);
+     String url = "https://stream.wikimedia.org/v2/stream/recentchange";
+     EventSource.Builder builder = new EventSource.Builder(eventHandler, URI.create(url));
+     EventSource eventSource = builder.build();`
+
+
 ### Dependencies required
 * OkHttp3
 * OkHttp EventSource
