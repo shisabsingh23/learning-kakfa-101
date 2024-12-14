@@ -116,6 +116,28 @@ This will format the directory that is in the log.dirs in the config/kraft/serve
 ```python
 kafka-topics.sh --bootstrap-server localhost:9092  --list
 ```
+## Producer Acknowledgement
+
+
+### Ack Types:
+* **acks = 0** , sends msg and does not wait for leader or any replica to acknowledge (possible data loss)
+![img_3.png](basics-101/src/main/resources/images/img_3.png)
+* **acks = 1** , sends msg and wait for only the leader to acknowledge(limited data loss)
+![img_4.png](basics-101/src/main/resources/images/img_4.png)
+* **acks = -1(all)** , sends msg and wait for leader & all replica present to acknowledgement (no data loss)
+![img_2.png](basics-101/src/main/resources/images/img_2.png)
+
+### min.insync.replicas (feature that goes hand in hand with acks - adds guarantee and avoid data loss)
+* acks = -1 and min.insync.replicas = 2
+  * implies that leader and atleast 2 insync replica should be available to 
+   accept the msg or else msg are not even accepted by broker
+  * _NotEnoughReplicasException_ is returned as response when insync replica number does not match
+![img_5.png](basics-101/src/main/resources/images/img_5.png)
+#### Note: 
+*   High Throughput :  How many transaction or query system can handle.
+`eg: DB with high throughput means it can handle large amount of query or perform I/O operations
+`
+*  Acknowledgement : Broker/replica have the data that was sent
 
 ## Wikimedia
 ### Real world example
