@@ -8,7 +8,7 @@
 #### Sticky Partitioner(NOT RECOMMENDED IN PROD as we can to have it follow stickyPartition - IMPROVES NETWORK EFFICIENCY)
 * Since Kafka 2.4, the Sticky Partitioner became the default for the Java Kafka client.
 
-* When sending msg if multiple msg are send quickly, producer will accumulate msg as much as possible and send in batch when its full and then switch to new batch, leading to sending to all msg to same partition rather than doing ***RoundRobin**(each msg to different partition)*
+* When sending msg if multiple msg are send quickly, producer will accumulate msg as much as possible and send in batch when its full and then switch to new batch, leading to sending all msg to same partition rather than doing ***RoundRobin**(each msg to different partition)*
 
 * Improves network efficiency as less travel is done.
 
@@ -147,12 +147,6 @@ kafka-topics.sh --bootstrap-server localhost:9092  --list
   * 1 broker loss can be handled
 
 
-#### Note: 
-*   High Throughput :  How many transaction or query system can handle.
-`eg: DB with high throughput means it can handle large amount of query or perform I/O operations
-`
-*  Acknowledgement : Broker/replica have the data that was sent
-
 ## Producer Retries
 * Safe Producer : **ENABLED** by default for kafka **VERSION > 3.0**. Producer is **SAFE** (printed on Intellij Console if want to check)
   * Following properties are set by default, if using version < 3.0 set the below property in propertyConfig
@@ -187,7 +181,28 @@ and sends to kafka. Method is async
      EventSource.Builder builder = new EventSource.Builder(eventHandler, URI.create(url));
      EventSource eventSource = builder.build();`
 
+## Compression
+* Reduces produced msg time by upto 4x
+* Faster to transfer data -> low latency and high throughput
+* compression.type = producer(default), broker takes the compressed data and writes to topic as it is (without unzipping)
+* compression.type = none (no compression applied at producer end)
 
+### Compression Can be enabled on: 
+* Producer level(recommended)
+* Broker(all server) / Only specific topic level
+
+### Linger.ms & batch.size producer setting
+* Comes into action when max.in.flight.requests.per.connection value is reached(default 5)
+`eg: max.in.flight.requests.per.connection = 5, sending upto 5 record without ack from broker is fine but after
+that starts adding msg in batch`
+* Can increase these setting below
+* 	batch.size = starts to batch msg till size specified after inflight request limit has
+been reached
+`eg:  batch.size is set: The producer will gather messages until the batch reaches the maximum size defined by batch.size (in bytes).
+*  linger.ms = producer waits for the duration specified to batch more msg
+`    eg: linger.ms = 5000 ms (5 seconds): This means the producer will wait for up to 5 seconds to accumulate more messages into the batch before sending it.
+`
+* **Note**: Either the batch is full first, or the specified time has passed — whichever happens first, the batch will be sent
 ### Dependencies required
 * OkHttp3
 * OkHttp EventSource
@@ -199,3 +214,17 @@ and sends to kafka. Method is async
 *   producer.send() method does not send the msg right away to kafka, puts the msg in queue as producer has buffer where it tries to bundled msg together and send in batches.
 *   flush(): we say hey send all msg that is in buffer immediately to kafka and blocks the program until done.
 *   close(): cleanup - free resources, etct. internally calls flush(), we did mention in code to explain flush() usage, flush() is optional.
+
+## Key Terms:
+*   High Throughput :  How many transaction or query system can handle.
+    `eg: DB with high throughput means it can handle large amount of query or perform I/O operations
+    `
+*  Acknowledgement : Broker/replica have the data that was sent
+* Latency : time taken to travel from source to destination
+  *  low latency = minimal delay 
+  * eg: gamer needs low latency or else it will take time to respond to the key they pressed
+## Best Practice
+* Use compression on PRODUCTION Environment
+  * unless individual new event size data is very small like 
+  wikimedia data in JSON format(ONLY KB)
+  * where realtime data is prioritized than low latency(less delay)
