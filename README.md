@@ -153,6 +153,20 @@ kafka-topics.sh --bootstrap-server localhost:9092  --list
 `
 *  Acknowledgement : Broker/replica have the data that was sent
 
+## Producer Retries
+* Safe Producer : **ENABLED** by default for kafka **VERSION > 3.0**. Producer is **SAFE** (printed on Intellij Console if want to check)
+  * Following properties are set by default, if using version < 3.0 set the below property in propertyConfig
+    `eg:      properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "ture");
+    properties.setProperty(ProducerConfig.ACKS_CONFIG, "all");`
+    * enable.idempotence : setting for producer,  **(Avoid duplicate)** in case of retries, there is chance of duplicate record.
+    This property make sure if a producer sends a msg and any network error happens such as error
+    during sending acknowledgement, with this feature kafka will not process msg again instead only send acknowledgement
+    * delivery.timeout.ms:  timeout period from moment msg are send to kafka
+    * max.in.flight.requests.per.connection : number of unacknowledged requests (i.e., requests sent by the client but not yet acknowledged by the server) that can be in-flight (outstanding) per connection to a Kafka broke
+      * eg: up to 5 requests can be sent before the producer waits for an acknowledgment for the earliest one.
+    * retries 
+    
+
 ## Wikimedia
 ### Real world example
 
