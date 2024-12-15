@@ -227,4 +227,4 @@ been reached
 * Use compression on PRODUCTION Environment
   * unless individual new event size data is very small like 
   wikimedia data in JSON format(ONLY KB)
-  * where realtime data is prioritized than low latency(less delay)
+  * where realtime data is prioritized at the cost of high latency(longer delay)
