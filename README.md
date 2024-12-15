@@ -128,11 +128,25 @@ kafka-topics.sh --bootstrap-server localhost:9092  --list
 ![img_2.png](basics-101/src/main/resources/images/img_2.png)
 
 ### min.insync.replicas (feature that goes hand in hand with acks - adds guarantee and avoid data loss)
-* acks = -1 and min.insync.replicas = 2
+* acks = -1 and min.insync.replicas(ISR) = 2
   * implies that leader and atleast 2 insync replica should be available to 
    accept the msg or else msg are not even accepted by broker
   * _NotEnoughReplicasException_ is returned as response when insync replica number does not match
 ![img_5.png](basics-101/src/main/resources/images/img_5.png)
+  
+* **Scenario 1**: 
+  ` reflicaton factor = 3, acks = all, ISR = 1`
+    * Only one broker , _**i.e. leader needs to have data**_
+    * **Why leader?** Leader is part of ISR. It first process the msg & then replica gets data form leader,
+    in this scenario we have only ISR as 1 , so only leader needs to send acknowledgement
+    * 2 broker can loss can be handled
+
+* **Scenario 2:**
+  ` reflicaton factor = 3, acks = all, ISR = 2`
+  * 1 leader and 1 replica needs to have data or send acknowledgement
+  * 1 broker loss can be handled
+
+
 #### Note: 
 *   High Throughput :  How many transaction or query system can handle.
 `eg: DB with high throughput means it can handle large amount of query or perform I/O operations
