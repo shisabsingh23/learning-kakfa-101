@@ -35,8 +35,9 @@
 ``` PATH="$PATH:/Users/user-name/2.13-3.9.0/bin" ```
 
 * Start Kafka in docker
-curl -L https://releases.conduktor.io/quick-start -o docker-compose.yml && docker compose up -d --wait && echo "Conduktor started on http://localhost:8080"
 
+`curl -L https://releases.conduktor.io/quick-start -o docker-compose.yml && docker compose up -d --wait && echo "Conduktor started on http://localhost:8080"
+`
 
 * Create Topic	
 ```python
