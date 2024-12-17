@@ -204,6 +204,12 @@ been reached
 `    eg: linger.ms = 5000 ms (5 seconds): This means the producer will wait for up to 5 seconds to accumulate more messages into the batch before sending it.
 `
 * **Note**: Either the batch is full first, or the specified time has passed — whichever happens first, the batch will be sent
+
+
+### Difference Summary Batch Size, Linger.ms, Inflight, Max Buffer size and
+Max Buffer.ms
+![difference-batch-linger-ms.jpeg](basics-101/src/main/resources/images/difference-batch-linger-ms.jpeg)
+
 ### Dependencies required
 * OkHttp3
 * OkHttp EventSource
