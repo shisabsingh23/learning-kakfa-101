@@ -206,9 +206,27 @@ been reached
 * **Note**: Either the batch is full first, or the specified time has passed — whichever happens first, the batch will be sent
 
 
-### Difference Summary Batch Size, Linger.ms, Inflight, Max Buffer size and
-Max Buffer.ms
-![difference-batch-linger-ms.jpeg](basics-101/src/main/resources/images/difference-batch-linger-ms.jpeg)
+### Buffer memory (32MB default)
+*  When the producer is sending messages faster than the broker can handle,
+the producer will buffer those messages in memory on PRODUCER END.
+* Queue msg on producer end before sending them to kafka 
+* After buffer is full, .send() gets blocked until max.block.ms time
+
+
+### max.block.ms
+* Time to block .send() after buffer is full until space is available in buffer again
+* if broker still not responding, .send() throws an Exception after time has elapsed
+
+### Difference Summary batch.size, linger.ms, max.in.flight.requests.per.connection, buffer.memory and max.block.ms
+
+
+| **Parameter**                               | **Description**                                                                                                                             | **Impact on Producer Behavior**                                                                                                                                    | **Default Value**       | **Typical Use Case**                                                                                                                                       |
+|---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **`batch.size`**                            | Maximum size (in bytes) of a single batch of records to send to a Kafka broker.                                                             | Affects how much data can be accumulated in memory before sending. Larger batch sizes improve throughput but increase latency.                                     | `16 KB`                 | Typically used to control the throughput. Increasing `batch.size` improves efficiency but may increase latency if set too high.                            |
+| **`linger.ms`**                             | The amount of time to wait before sending a batch of records, even if the batch size is not reached.                                        | Allows the producer to wait and accumulate more records before sending, improving batching efficiency at the cost of latency.                                      | `0 ms` (no delay)       | Used to balance between throughput and latency. Higher values allow for more efficient batching at the expense of higher latency.                          |
+| **`max.in.flight.requests.per.connection`** | The maximum number of unacknowledged requests sent to a broker per connection.                                                              |  | `5`                     |  |
+| **`buffer.memory`**                         | The total memory available to the producer for buffering data before sending it to the broker.                                              | If the buffer is full, the producer will block or fail, depending on `max.block.ms`. Increasing buffer memory increases the number of records that can be stored.  | `32 MB`                 | Controls the memory available for batching data. A larger buffer size allows for more records to be stored before sending.                                 |
+| **`max.block.ms`**                          | The maximum time (in milliseconds) that the producer will block when the buffer is full before throwing an exception or returning an error. | If the buffer is full, the producer will block until space becomes available, or until the `max.block.ms` time limit is reached.                                   | `60000 ms` (60 seconds) | Used to control the behavior when the producer cannot send records immediately (due to full buffer). Shorter values may lead to frequent timeouts.         |
 
 ### Dependencies required
 * OkHttp3
