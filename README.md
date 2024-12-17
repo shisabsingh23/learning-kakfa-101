@@ -253,3 +253,11 @@ the producer will buffer those messages in memory on PRODUCER END.
   * unless individual new event size data is very small like 
   wikimedia data in JSON format(ONLY KB)
   * where realtime data is prioritized at the cost of high latency(longer delay)
+
+
+## TODO NEXT......
+* Get clear understanding if msg sent
+  in batch(sticky partitioner)  VS roundrobin increase latency or decreases latency?
+  eg: in sticky partitioner we send msg to same partition in batch( sent when either batch is full or linger.ms has elapsed).
+  As we are batching and sending them, would not it cause more delay? i.e. high latency? Or since we are sending to same partition
+  even though its batched and this takes less time as same partition is used every time?
